@@ -19,12 +19,22 @@
 </div>
 <div class="menu-inner-shadow"></div>
 <ul class="menu-inner py-1 ps ps--active-y" id="menu1">
+@if(auth()->user()->hasRole('admin'))
+    <li class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+        <a href="{{ route('dashboard') }}" class="menu-link">
+            <i class="menu-icon ri-dashboard-line"></i>
+            <div>Users</div>
+        </a>
+    </li>
+    @endif
+    @if(auth()->user()->hasRole('admin'))
     <li class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
         <a href="{{ route('dashboard') }}" class="menu-link">
             <i class="menu-icon ri-dashboard-line"></i>
             <div>Dashboard</div>
         </a>
     </li>
+    @endif
     <li class="menu-item {{ request()->routeIs('proyectos.index') ? 'active' : '' }}">
         <a href="{{ route('proyectos.index') }}" class="menu-link">
             <i class="menu-icon ri-home-smile-line"></i>

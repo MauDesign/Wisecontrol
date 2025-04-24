@@ -20,6 +20,13 @@ class RegisteredUserController extends Controller
     public function create(): View
     {
         return view('auth.register');
+        
+    }
+
+    public function createClient(): View
+    {
+        return view('auth.registerClient');
+        
     }
 
     /**
@@ -33,6 +40,7 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required', 'string', 'exists:roles,name'] // ¡Importante validar que el rol exista!
         ]);
 
         $user = User::create([
@@ -40,6 +48,10 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        
+        $roleName = $request->input('role');
+        $user->assignRole($roleName);
 
         event(new Registered($user));
 
